@@ -1,0 +1,85 @@
+import React from "react";
+import { HackerDecrypt } from "./Letter";
+import { AnimatePresence, LayoutGroup, motion } from "motion/react";
+
+export type InsecureOptions = {
+  length?: number;
+  upper?: boolean;
+  digits?: boolean;
+  symbols?: boolean;
+};
+
+export function generateInsecureRandom(opts: InsecureOptions = {}): string {
+  const { length = 8, upper = false, digits = true, symbols = false } = opts;
+  let chars = "abcdefghijklmnopqrstuvwxyz";
+  if (upper) chars += "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  if (digits) chars += "0123456789";
+  if (symbols) chars += "-_";
+  let out = "";
+  for (let i = 0; i < length; i++) {
+    out += chars[Math.floor(Math.random() * chars.length)];
+  }
+  return out;
+}
+
+export default function App() {
+  const [password, setPassword] = React.useState("*".repeat(8));
+
+  return (
+    <div className="p-10 bg-black text-white flex justify-center items-center min-h-screen">
+      <div className="flex flex-col space-y-6">
+        <h1 className="text-center text-4xl tracking-wider font-bold">
+          NixPSW
+        </h1>
+        <LayoutGroup>
+          <motion.div
+            layout
+            transition={{ type: "spring", stiffness: 200, damping: 25 }}
+            className="flex gap-10 ring ring-red-500 p-10 min-w-xl"
+          >
+            <motion.p
+              layout
+              className="text-3xl font-mono ring whitespace-nowrap overflow-hidden w-full"
+            >
+              <AnimatePresence mode="popLayout">
+                {password.split("").map((char, index) => (
+                  <motion.span
+                    key={`${index}-${char}-${password}`}
+                    initial={{ opacity: 0, y: -6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 6 }}
+                    transition={{
+                      delay: 0.02 * index,
+                      duration: 0.25,
+                      ease: "easeOut",
+                    }}
+                    style={{
+                      display: "inline-block",
+                      minWidth: "1ch",
+                      textAlign: "center",
+                    }}
+                  >
+                    {char}
+                  </motion.span>
+                ))}
+              </AnimatePresence>
+            </motion.p>
+
+            <button
+              onClick={() =>
+                setPassword(
+                  generateInsecureRandom({
+                    length: Math.floor(Math.random() * 8) + 6,
+                  }),
+                )
+              }
+              className="ring rounded-md px-4 py-2"
+            >
+              Shuffle
+            </button>
+          </motion.div>
+        </LayoutGroup>
+      </div>
+    </div>
+  );
+}
