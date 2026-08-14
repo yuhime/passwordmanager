@@ -145,7 +145,7 @@ impl Vault {
             .iter()
             .map(|entry| {
                 let key = entry.key().clone();
-                let password = entry.value().clone();
+                let password = entry.value();
                 PasswordFragment::new(key, password.label.clone(), password.use_times)
             })
             .collect()

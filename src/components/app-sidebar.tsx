@@ -13,6 +13,7 @@ import {
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupAction,
   SidebarGroupContent,
@@ -22,6 +23,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { Button } from "./ui/button";
 
 // Menu items.
 const tabbars = [
@@ -65,6 +67,22 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+      <SidebarFooter>
+        <SidebarMenu>
+          <SidebarMenuItem></SidebarMenuItem>
+          <SidebarMenuItem>
+            <SidebarMenuButton asChild className="cursor-pointer ">
+              <Button
+                variant={"outline"}
+                className="justify-start text-destructive [&:hover,&:focus,&:active]:text-destructive"
+              >
+                <Settings />
+                <span>App Timeout</span>
+              </Button>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarFooter>
     </Sidebar>
   );
 }
